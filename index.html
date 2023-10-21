@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login to a-reel scrum board</title>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login to a-reel scrum board</h1>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <button type="button" id="login-button">Login</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        // Replace this with your actual API endpoint for JWT authentication
+        const API_URL = 'https://your-api.com/auth';
+
+        document.getElementById('login-button').addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Send a POST request to your authentication API
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    // Save the JWT token to local storage or a secure storage mechanism
+                    localStorage.setItem('jwtToken', data.token);
+                    // Redirect to the main application or dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    document.getElementById('message').textContent = 'Invalid credentials. Please try again.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'An error occurred. Please try again later.';
+            });
+        });
+    </script>
+</body>
+</html>
